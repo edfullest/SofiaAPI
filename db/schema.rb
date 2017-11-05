@@ -10,7 +10,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171030185110) do
+ActiveRecord::Schema.define(version: 20171104231644) do
+
+  create_table "Courses_People", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "Course_id", null: false
+    t.bigint "Person_id", null: false
+    t.float "rating", limit: 24
+    t.index ["Course_id", "Person_id"], name: "index_Courses_People_on_course_id_and_person_id"
+    t.index ["Person_id", "Course_id"], name: "index_Courses_People_on_person_id_and_course_id"
+  end
+
+  create_table "answers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.boolean "is_correct"
+    t.text "description"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "type"
+    t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
+  create_table "assignments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.date "start_date"
+    t.date "end_date"
+    t.float "rating", limit: 24
+    t.string "type"
+    t.bigint "course_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_assignments_on_course_id"
+  end
+
+  create_table "courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.date "start_date"
+    t.date "end_date"
+    t.float "rating", limit: 24
+    t.bigint "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_courses_on_person_id"
+  end
+
+  create_table "doubts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text "question"
+    t.text "answer"
+    t.bigint "assignment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignment_id"], name: "index_doubts_on_assignment_id"
+  end
 
   create_table "people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "provider", default: "email", null: false
@@ -44,4 +94,17 @@ ActiveRecord::Schema.define(version: 20171030185110) do
     t.index ["uid", "provider"], name: "index_people_on_uid_and_provider", unique: true
   end
 
+  create_table "questions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text "description"
+    t.bigint "assignment_id"
+    t.string "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignment_id"], name: "index_questions_on_assignment_id"
+  end
+
+  add_foreign_key "assignments", "courses"
+  add_foreign_key "courses", "people"
+  add_foreign_key "doubts", "assignments"
+  add_foreign_key "questions", "assignments"
 end

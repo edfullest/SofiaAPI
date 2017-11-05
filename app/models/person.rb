@@ -9,5 +9,5 @@ class Person < ActiveRecord::Base
     end
 
     scope :students, -> { where(type: 'Student') } 
-    scope :teachers, -> { where(race: 'Teacher') } 
+    scope :teachers, -> { where(type: 'Teacher') } 
 end

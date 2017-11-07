@@ -16,8 +16,13 @@ class CoursesController < ApplicationController
   # POST /courses
   # POST /courses.json
   def create
-    @course = Course.new(course_params)
-    
+    puts params[:start_date]
+    @course = Course.new
+    @course.start_date = params[:start_date]
+    @course.end_date = params[:end_date]
+    @course.name = params[:name]
+    @course.teacher = current_person
+
     if @course.save
       render :show, status: :created, location: @course
     else

@@ -10,4 +10,8 @@ class Person < ActiveRecord::Base
 
     scope :students, -> { where(type: 'Student') } 
     scope :teachers, -> { where(type: 'Teacher') } 
+
+    # --Relation name in DataModel: Course <<has_teachers>> 
+    # --Association with Course: 1 to many relationship with Course.
+    # has_many :courses
 end

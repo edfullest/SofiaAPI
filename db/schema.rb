@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(version: 20171104231644) do
     t.index ["assignment_id"], name: "index_questions_on_assignment_id"
   end
 
+  add_foreign_key "answers", "questions"
   add_foreign_key "assignments", "courses"
   add_foreign_key "courses", "people"
   add_foreign_key "doubts", "assignments"

@@ -47,6 +47,13 @@ class TeachersController < ApplicationController
     @teacher.destroy
   end
 
+  def load_course
+    puts ("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    puts params[:course_id]
+
+    
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_teacher
@@ -56,5 +63,6 @@ class TeachersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def teacher_params
       params.fetch(:teacher, {})
+      params.permit(:course_id)
     end
 end

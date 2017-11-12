@@ -1,2 +1,4 @@
-json.extract! teacher, :id, :created_at, :updated_at
-json.url teacher_url(teacher, format: :json)
+json.course @course
+json.assignments @assignments
+json.students @students
+# json.students json.array! @students, partial: 'people/person', as: :person

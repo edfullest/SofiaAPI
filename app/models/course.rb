@@ -11,6 +11,4 @@ class Course < ApplicationRecord
   # --Relation name in DataModel: Course <<provides>> assignments
   # --Association with Assignment: 1 to many relationship with Assignment.
   has_many :assignments
-
-
 end

@@ -12,7 +12,6 @@ class CoursesController < ApplicationController
   # GET /courses/1.json
   def show
     if current_person.type == 'Teacher'
-      
       redirect_to teachers_load_course_url(course_id: params[:id])
     else
       redirect_to :controller => 'controllername', :action => 'actionname' 

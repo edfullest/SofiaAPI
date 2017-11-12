@@ -48,10 +48,12 @@ class TeachersController < ApplicationController
   end
 
   def load_course
-    puts ("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    puts params[:course_id]
+    @course = Course.find(params[:course_id])
+    teacher = current_person
+    @assignments = @course.assignments
+    @students = @course.students
 
-    
+    render "teachers/courses"
   end
 
   private

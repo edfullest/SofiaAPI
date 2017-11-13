@@ -14,7 +14,7 @@ class Assignment < ApplicationRecord
 
   # --Relation name in DataModel: Assignment <<asks>> Questions. 
   # --Association with Question: 1 to many relationship with Question.
-  has_many :questions
+  has_many :questions, dependent: :destroy
 
   def self.type
       %w(Quiz Exam Homework Activity)

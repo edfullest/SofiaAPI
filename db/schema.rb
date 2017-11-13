@@ -10,15 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171104231644) do
-
-  create_table "Courses_People", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.bigint "Course_id", null: false
-    t.bigint "Person_id", null: false
-    t.float "rating", limit: 24
-    t.index ["Course_id", "Person_id"], name: "index_Courses_People_on_course_id_and_person_id"
-    t.index ["Person_id", "Course_id"], name: "index_Courses_People_on_person_id_and_course_id"
-  end
+ActiveRecord::Schema.define(version: 20171113005702) do
 
   create_table "answers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.boolean "is_correct"
@@ -51,6 +43,15 @@ ActiveRecord::Schema.define(version: 20171104231644) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_courses_on_person_id"
+  end
+
+  create_table "courses_people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "course_id"
+    t.bigint "person_id"
+    t.float "grade", limit: 24
+    t.index ["course_id", "person_id"], name: "by_course_and_person", unique: true
+    t.index ["course_id"], name: "index_courses_people_on_course_id"
+    t.index ["person_id"], name: "index_courses_people_on_person_id"
   end
 
   create_table "doubts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -103,9 +104,10 @@ ActiveRecord::Schema.define(version: 20171104231644) do
     t.index ["assignment_id"], name: "index_questions_on_assignment_id"
   end
 
-  add_foreign_key "answers", "questions"
   add_foreign_key "assignments", "courses"
   add_foreign_key "courses", "people"
+  add_foreign_key "courses_people", "courses"
+  add_foreign_key "courses_people", "people"
   add_foreign_key "doubts", "assignments"
   add_foreign_key "questions", "assignments"
 end

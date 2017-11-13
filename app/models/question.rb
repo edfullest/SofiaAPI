@@ -6,7 +6,7 @@ class Question < ApplicationRecord
 
   # --Relation name in DataModel: Question <<has>> Answers. 
   # --Association with Answer: 1 to many relationship with Answer.
-  has_many :answers
+  has_many :answers, dependent: :delete_all
 
   def self.type
       %w(BlankFill MultipleChoice)

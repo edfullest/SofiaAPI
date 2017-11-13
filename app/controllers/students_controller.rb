@@ -1,6 +1,6 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: [:show, :update, :destroy]
-  before_action :authenticate_person!, :authorize_only_to_students, only: [:courses]
+  before_action :authenticate_person!, :authorize_only_to_students, only: [:courses, :register_course, :unregister_course]
   
   def courses
     student = current_person
@@ -12,6 +12,26 @@ class StudentsController < ApplicationController
   # GET /students.json
   def index
     @students = Student.all
+  end
+
+  def register_course
+    student = current_person
+    course_registration = CoursesPeople.new
+    course_registration.person_id = student.id
+    course_registration.course_id = params[:course_id]
+    @course = course_registration.course
+    if course_registration.save
+      render "courses/show"
+    else
+      render json: course_registration.errors, status: :unprocessable_entity
+    end
+  end
+
+  def unregister_course
+    student = current_person
+    course_registration = CoursesPeople.where(:course_id => params[:course_id])
+                                       .where(:person_id => student.id)
+    course_registration.destroy_all
   end
 
   # GET /students/1
@@ -56,5 +76,6 @@ class StudentsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def student_params
       params.fetch(:student, {})
+      params.permit(:course_id)
     end
 end

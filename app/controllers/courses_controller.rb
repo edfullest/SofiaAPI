@@ -1,6 +1,7 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :update, :destroy]
   before_action :authenticate_person!, :authorize_only_to_teachers, only: [:show, :create, :update, :destroy]
+  before_action :authenticate_person!, :authorize_only_to_students, only: [:search]
   
   # GET /courses
   # GET /courses.json
@@ -36,6 +37,16 @@ class CoursesController < ApplicationController
     end
   end
 
+  def search
+    query = params[:query]
+    # @courses = Course.where("name LIKE ?", "%#{query}%")
+    # Course.joins(:courses_people).where(:id => current_account_id)
+    student = current_person
+    # @courses CoursesPeople.includes(:course).where.not(person_id: [current_person.id])
+    @courses = Course.where.not(:id => student.courses.pluck(:id)).where("name LIKE ?", "%#{query}%")
+    render "courses/index"
+  end
+
   # PATCH/PUT /courses/1
   # PATCH/PUT /courses/1.json
   def update
@@ -60,6 +71,6 @@ class CoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:name, :start_date, :end_date, :rating)
+      params.require(:course).permit(:name, :start_date, :end_date, :rating, :query)
     end
 end
